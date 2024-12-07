@@ -29,6 +29,5 @@ public class TestMenuTgBotComponent extends TelegramLongPollingBot {
         var message = update.getMessage();
         var textFromMessage = message.getText();
         log.debug(textFromMessage);
-//        System.out.println(textFromMessage);
     }
 }
