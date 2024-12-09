@@ -2,7 +2,7 @@ package org.klozevitz.telegramComponent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.klozevitz.controller.UpdateController;
+import org.klozevitz.controllers.UpdateController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -39,10 +39,6 @@ public class TestMenuTgBotComponent extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        var message = update.getMessage();
-        var textFromMessage = message.getText();
-        log.debug(textFromMessage);
-
         updateController.processUpdate(update);
     }
 
