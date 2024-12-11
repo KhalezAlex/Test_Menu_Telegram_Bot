@@ -25,6 +25,6 @@ import javax.persistence.Table;
 public class RawData extends BaseEntity {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Update update;
+    private Update event;
 }
 
