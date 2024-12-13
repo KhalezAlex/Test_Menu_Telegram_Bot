@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
