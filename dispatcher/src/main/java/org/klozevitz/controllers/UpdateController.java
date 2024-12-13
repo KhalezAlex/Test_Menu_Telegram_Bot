@@ -30,7 +30,7 @@ public class UpdateController {
             return;
         }
 
-        if (update.getMessage() != null) {
+        if (update.hasMessage()) {
             distributeMessageByType(update);
         } else {
             var errorMessage = String.format("Received message type is unsupported: %s", update);
@@ -40,9 +40,9 @@ public class UpdateController {
 
     private void distributeMessageByType(Update update) {
         var message = update.getMessage();
-        if (message.getText() != null) {
+        if (message.hasText()) {
             processTextMessage(update);
-        } else if (message.getDocument() != null) {
+        } else if (message.hasDocument()) {
             processDocMessage(update);
         } else {
             setUnsupportedMessageTypeView(update);
