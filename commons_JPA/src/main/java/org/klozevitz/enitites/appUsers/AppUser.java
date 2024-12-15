@@ -1,13 +1,11 @@
 package org.klozevitz.enitites.appUsers;
 
+import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.klozevitz.enitites.BaseEntity;
 import org.klozevitz.enitites.appUsers.enums.UserState;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,7 +14,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AbstractAppUser extends BaseEntity {
+@Entity
+@Table(name = "app_user_t")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class AppUser extends BaseEntity {
     private Long telegramUserId;
     @CreationTimestamp
     private LocalDateTime firstLoginDate;
@@ -24,6 +25,12 @@ public class AbstractAppUser extends BaseEntity {
     private boolean isActive;
     @Enumerated(EnumType.STRING)
     private UserState State;
-    @OneToOne
+    @OneToOne(mappedBy = "appUser")
+    private Admin admin;
+    @OneToOne(mappedBy = "appUser")
     private Company company;
+    @OneToOne(mappedBy = "appUser")
+    private Department department;
+    @OneToOne(mappedBy = "appUser")
+    private Employee employee;
 }

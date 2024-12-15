@@ -1,11 +1,9 @@
 package org.klozevitz.enitites.menu;
 
+import javax.persistence.*;
 import lombok.*;
 import org.klozevitz.enitites.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.Set;
 
 @Getter
@@ -20,6 +18,9 @@ public class Item extends BaseEntity {
     private String name;
     private Double weight;
     private String units;
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     private Set<Ingredient> ingredients;
 }

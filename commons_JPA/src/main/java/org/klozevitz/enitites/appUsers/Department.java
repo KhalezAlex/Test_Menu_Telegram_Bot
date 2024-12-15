@@ -1,11 +1,10 @@
 package org.klozevitz.enitites.appUsers;
 
+import javax.persistence.*;
 import lombok.*;
+import org.klozevitz.enitites.BaseEntity;
 import org.klozevitz.enitites.menu.Category;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.Set;
 
 @Getter
@@ -16,9 +15,15 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "department_t")
-public class Department extends AbstractAppUser {
-    @OneToMany
+public class Department extends BaseEntity {
+    @OneToOne
+    @JoinColumn(name = "app_user_id")
+    private AppUser appUser;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
     private Set<Employee> employees;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
     private Set<Category> menu;
 }

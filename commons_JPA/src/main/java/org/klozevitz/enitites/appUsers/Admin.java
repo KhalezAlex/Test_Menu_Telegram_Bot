@@ -1,9 +1,8 @@
 package org.klozevitz.enitites.appUsers;
 
+import javax.persistence.*;
 import lombok.*;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.klozevitz.enitites.BaseEntity;
 
 @Getter
 @Setter
@@ -13,5 +12,8 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Entity
 @Table(name = "admin_t")
-public class Admin extends AbstractAppUser {
+public class Admin extends BaseEntity {
+    @OneToOne
+    @JoinColumn(name = "app_user_id")
+    private AppUser appUser;
 }

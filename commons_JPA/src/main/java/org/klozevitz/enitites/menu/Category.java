@@ -1,11 +1,10 @@
 package org.klozevitz.enitites.menu;
 
+import javax.persistence.*;
 import lombok.*;
 import org.klozevitz.enitites.BaseEntity;
+import org.klozevitz.enitites.appUsers.Department;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.Set;
 
 @Getter
@@ -18,6 +17,9 @@ import java.util.Set;
 @Table(name = "category_t")
 public class Category extends BaseEntity {
     private String name;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Set<Item> list;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 }
