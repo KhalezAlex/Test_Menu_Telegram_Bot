@@ -1,4 +1,4 @@
-package org.klozevitz.model.entities;
+package org.klozevitz.enitites;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
