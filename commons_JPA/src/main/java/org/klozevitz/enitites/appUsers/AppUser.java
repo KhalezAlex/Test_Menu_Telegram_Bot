@@ -24,13 +24,17 @@ public class AppUser extends BaseEntity {
     private String username;
     private boolean isActive;
     @Enumerated(EnumType.STRING)
-    private UserState State;
-    @OneToOne(mappedBy = "appUser")
+    private UserState state;
+    @OneToOne
+    @JoinColumn(name = "admin_id")
     private Admin admin;
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne
+    @JoinColumn(name = "company_id")
     private Company company;
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne
+    @JoinColumn(name = "department_id")
     private Department department;
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 }
