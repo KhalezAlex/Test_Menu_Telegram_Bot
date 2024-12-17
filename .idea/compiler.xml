@@ -13,10 +13,14 @@
         <module name="dispatcher" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="commons_Telegram_view" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="commons_JPA" options="-parameters" />
+      <module name="commons_Telegram_view" options="-parameters" />
       <module name="commons_rabbitMQ" options="-parameters" />
       <module name="dispatcher" options="-parameters" />
       <module name="node" options="-parameters" />
