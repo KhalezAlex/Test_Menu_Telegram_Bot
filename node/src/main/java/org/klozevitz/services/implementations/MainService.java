@@ -23,19 +23,19 @@ public class MainService implements Main {
     @Override
     public void processTextMessage(Update update) {
         saveRawData(update);
-
-        var message = update.getMessage();
-        var telegramUser = message.getFrom();
-        var appUser = findOrSaveAppUser(telegramUser);
+        
+        var appUser = findOrSaveAppUser(update);
 
         var sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setText("FROM NODE");
 
         answerProducer.produceAnswer(sendMessage);
     }
 
-    private AppUser findOrSaveAppUser(User telegramUser) {
+    private AppUser findOrSaveAppUser(Update update) {
+        var message = update.getMessage();
+        var telegramUser = message.getFrom();
         AppUser persistentAppUser = appUserRepo.findAppUserByTelegramUserId(telegramUser.getId());
         if (persistentAppUser == null) {
             AppUser transientAppUser = AppUser.builder()
