@@ -13,6 +13,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import static org.klozevitz.commonViews.CommonView.welcomePage;
+
 @Service
 @RequiredArgsConstructor
 public class MainService implements Main {
@@ -26,11 +28,18 @@ public class MainService implements Main {
         
         var appUser = findOrSaveAppUser(update);
 
-        var sendMessage = new SendMessage();
-        sendMessage.setChatId(update.getMessage().getChatId().toString());
-        sendMessage.setText("FROM NODE");
+        var userState = appUser.getState();
+        var text = update.getMessage().getText();
+        if (appUser.getState() == UserState.BASIC_STATE) {
+            var sendMessage = welcomePage(update);
+            answerProducer.produceAnswer(sendMessage);
+        }
 
-        answerProducer.produceAnswer(sendMessage);
+//        var sendMessage = new SendMessage();
+//        sendMessage.setChatId(update.getMessage().getChatId().toString());
+//        sendMessage.setText("FROM NODE");
+//
+//        answerProducer.produceAnswer(sendMessage);
     }
 
     private AppUser findOrSaveAppUser(Update update) {
@@ -48,7 +57,7 @@ public class MainService implements Main {
             return appUserRepo.save(transientAppUser);
         }
 
-        return null;
+        return persistentAppUser;
     }
 
     private void saveRawData(Update update) {
