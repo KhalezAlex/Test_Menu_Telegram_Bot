@@ -8,14 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="node" />
+        <module name="commons_Telegram_view" />
         <module name="commons_JPA" />
         <module name="commons_rabbitMQ" />
         <module name="dispatcher" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="commons_Telegram_view" target="11" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
