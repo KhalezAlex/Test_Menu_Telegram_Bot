@@ -1,17 +1,15 @@
-package org.klozevitz.services.implementations;
+package org.klozevitz.services.implementations.base;
 
 import lombok.RequiredArgsConstructor;
 import org.klozevitz.enitites.appUsers.AppUser;
-import org.klozevitz.enitites.appUsers.enums.UserState;
 import org.klozevitz.model.entities.RawData;
 import org.klozevitz.model.repositories.RawDataRepo;
 import org.klozevitz.repositories.appUsers.AppUserRepo;
-import org.klozevitz.services.interfaces.AnswerProducer;
-import org.klozevitz.services.interfaces.Main;
+import org.klozevitz.services.interfaces.base.AnswerProducer;
+import org.klozevitz.services.interfaces.base.Main;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +24,31 @@ public class MainService implements Main {
         
         var appUser = findOrSaveAppUser(update);
 
+        var userState = appUser.getState();
+        var text = update.getMessage().getText();
+        Object output;
+
+//        if (CANCEL.equals(text)) {
+//            output = cancelProcess(appUser);
+//        } else if (BASIC_STATE.equals(appUser.getState())) {
+//            output = processServiceCommand();
+//        } else if (WAITING_FOR_EMAIL)
+
+
+
         var sendMessage = new SendMessage();
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setText("FROM NODE");
 
         answerProducer.produceAnswer(sendMessage);
+    }
+
+    private String processServiceCommand() {
+        return null;
+    }
+
+    private String cancelProcess(AppUser appUser) {
+        return null;
     }
 
     private AppUser findOrSaveAppUser(Update update) {
@@ -43,12 +61,12 @@ public class MainService implements Main {
                     .username(telegramUser.getUserName())
                     // TODO изменить значение по умолчанию после добаавления регистрации
                     .isActive(true)
-                    .state(UserState.BASIC_STATE)
+                    .state(null)
                     .build();
             return appUserRepo.save(transientAppUser);
         }
 
-        return null;
+        return persistentAppUser;
     }
 
     private void saveRawData(Update update) {

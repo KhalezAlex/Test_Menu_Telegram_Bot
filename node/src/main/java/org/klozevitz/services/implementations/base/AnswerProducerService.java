@@ -1,8 +1,8 @@
-package org.klozevitz.services.implementations;
+package org.klozevitz.services.implementations.base;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.klozevitz.services.interfaces.AnswerProducer;
+import org.klozevitz.services.interfaces.base.AnswerProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

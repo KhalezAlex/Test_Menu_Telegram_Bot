@@ -30,7 +30,7 @@ public class UpdateController {
             return;
         }
 
-        if (update.hasMessage()) {
+        if (update.hasMessage() || update.hasCallbackQuery()) {
             distributeMessageByType(update);
         } else {
             var errorMessage = String.format("Received message type is unsupported: %s", update);
@@ -40,7 +40,7 @@ public class UpdateController {
 
     private void distributeMessageByType(Update update) {
         var message = update.getMessage();
-        if (message.hasText()) {
+        if (message.hasText() || update.hasCallbackQuery()) {
             processTextMessage(update);
         } else if (message.hasDocument()) {
             processDocMessage(update);

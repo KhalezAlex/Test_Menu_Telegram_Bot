@@ -1,9 +1,9 @@
-package org.klozevitz.services.implementations;
+package org.klozevitz.services.implementations.base;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.klozevitz.services.interfaces.Main;
-import org.klozevitz.services.interfaces.UpdateConsumer;
+import org.klozevitz.services.interfaces.base.Main;
+import org.klozevitz.services.interfaces.base.UpdateConsumer;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
