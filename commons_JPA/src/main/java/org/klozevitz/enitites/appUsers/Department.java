@@ -22,8 +22,8 @@ public class Department extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Employee> employees;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Category> menu;
 }

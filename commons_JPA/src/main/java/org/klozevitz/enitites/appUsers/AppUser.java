@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "app_user_t")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class AppUser extends BaseEntity {
     private Long telegramUserId;
     @CreationTimestamp
@@ -25,16 +24,12 @@ public class AppUser extends BaseEntity {
     private boolean isActive;
     @Enumerated(EnumType.STRING)
     private UserState state;
-    @OneToOne
-    @JoinColumn(name = "admin_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Admin admin;
-    @OneToOne
-    @JoinColumn(name = "company_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Company company;
-    @OneToOne
-    @JoinColumn(name = "department_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Department department;
-    @OneToOne
-    @JoinColumn(name = "employee_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Employee employee;
 }
