@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static org.klozevitz.RabbitQueue.DOC_MESSAGE_UPDATE;
-import static org.klozevitz.RabbitQueue.TEXT_MESSAGE_UPDATE;
+import static org.klozevitz.RabbitQueue.*;
 
 @Log4j
 @Component
@@ -39,9 +38,23 @@ public class UpdateController {
     }
 
     private void distributeMessageByType(Update update) {
+        if (update.hasCallbackQuery()) {
+            processUpdateWithCallbackQuery(update);
+        } else if (update.hasMessage()) {
+            processUpdateWithMessage(update);
+        } else {
+            setUnsupportedMessageTypeView(update);
+        }
+    }
+
+    private void processUpdateWithMessage(Update update) {
         var message = update.getMessage();
-        if (message.hasText() || update.hasCallbackQuery()) {
-            processTextMessage(update);
+        if (message.hasText()) {
+            if (message.getText().startsWith("/")) {
+                processCommandMessage(update);
+            } else {
+                processTextMessage(update);
+            }
         } else if (message.hasDocument()) {
             processDocMessage(update);
         } else {
@@ -60,11 +73,20 @@ public class UpdateController {
     }
 
     private void processTextMessage(Update update) {
-        updateProducer.produce(TEXT_MESSAGE_UPDATE, update);
+        updateProducer.produce(TEXT_UPDATE, update);
+    }
+
+
+    private void processCommandMessage(Update update) {
+        updateProducer.produce(COMMAND_UPDATE, update);
+    }
+
+    private void processUpdateWithCallbackQuery(Update update) {
+        updateProducer.produce(CALLBACK_QUERY_UPDATE, update);
     }
 
     private void processDocMessage(Update update) {
-        updateProducer.produce(DOC_MESSAGE_UPDATE, update);
+        updateProducer.produce(DOC_UPDATE, update);
         setFileReceivedMessage(update);
     }
 
