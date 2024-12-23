@@ -1,6 +1,7 @@
 package org.klozevitz.services.implementations.base;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.klozevitz.enitites.appUsers.AppUser;
 import org.klozevitz.model.entities.RawData;
 import org.klozevitz.model.repositories.RawDataRepo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@Log4j
 @Service
 @RequiredArgsConstructor
 public class MainService implements Main {
@@ -19,7 +21,14 @@ public class MainService implements Main {
     private final AppUserRepo appUserRepo;
 
     @Override
+    public void processCallbackQueryMessage(Update update) {
+        log.debug("processing callback message");
+    }
+
+    @Override
     public void processTextMessage(Update update) {
+        log.debug("processing text message");
+
         saveRawData(update);
         
         var appUser = findOrSaveAppUser(update);
@@ -28,14 +37,6 @@ public class MainService implements Main {
         var text = update.getMessage().getText();
         Object output;
 
-//        if (CANCEL.equals(text)) {
-//            output = cancelProcess(appUser);
-//        } else if (BASIC_STATE.equals(appUser.getState())) {
-//            output = processServiceCommand();
-//        } else if (WAITING_FOR_EMAIL)
-
-
-
         var sendMessage = new SendMessage();
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setText("FROM NODE");
@@ -43,15 +44,18 @@ public class MainService implements Main {
         answerProducer.produceAnswer(sendMessage);
     }
 
-    private String processServiceCommand() {
-        return null;
+    @Override
+    public void processCommandMessage(Update update) {
+        log.debug("processing command message");
     }
 
-    private String cancelProcess(AppUser appUser) {
-        return null;
+    @Override
+    public void processDocMessage(Update update) {
+        log.debug("processing document message");
     }
 
     private AppUser findOrSaveAppUser(Update update) {
+        // TODO в коллбеке юзера определяют по-другому
         var message = update.getMessage();
         var telegramUser = message.getFrom();
         AppUser persistentAppUser = appUserRepo.findAppUserByTelegramUserId(telegramUser.getId());
