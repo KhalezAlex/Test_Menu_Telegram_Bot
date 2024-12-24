@@ -3,14 +3,14 @@ package org.klozevitz.services.enums;
 import lombok.Getter;
 
 @Getter
-public enum Commands {
+public enum CommonServiceCommands {
     HELP("/help"),
     CANCEL("/cancel"),
     START("/start");
 
     private final String command;
 
-    Commands(String command) {
+    CommonServiceCommands(String command) {
         this.command = command;
     }
 
