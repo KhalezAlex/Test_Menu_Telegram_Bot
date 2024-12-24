@@ -63,13 +63,10 @@ public class MainService implements Main {
             AppUser transientAppUser = AppUser.builder()
                     .telegramUserId(telegramUser.getId())
                     .username(telegramUser.getUserName())
-                    // TODO изменить значение по умолчанию после добаавления регистрации
                     .isActive(true)
-                    .state(null)
                     .build();
             return appUserRepo.save(transientAppUser);
         }
-
         return persistentAppUser;
     }
 
