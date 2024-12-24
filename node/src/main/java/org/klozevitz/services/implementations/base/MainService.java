@@ -14,7 +14,9 @@ import org.klozevitz.services.interfaces.producersByMessageType.DocumentMessageA
 import org.klozevitz.services.interfaces.producersByMessageType.TextMessageAnswerProducer;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 @Log4j
 @Service
@@ -33,6 +35,8 @@ public class MainService implements Main {
 
         saveRawData(update);
 
+        findOrSaveAppUser(update);
+
         callbackQueryMessageAnswerProducer.produce(update);
     }
 
@@ -41,6 +45,8 @@ public class MainService implements Main {
         log.debug("processing text message");
 
         saveRawData(update);
+
+        findOrSaveAppUser(update);
 
         textMessageAnswerProducer.produce(update);
     }
@@ -51,6 +57,8 @@ public class MainService implements Main {
 
         saveRawData(update);
 
+        findOrSaveAppUser(update);
+
         commandMessageAnswerProducer.produce(update);
     }
 
@@ -60,13 +68,16 @@ public class MainService implements Main {
 
         saveRawData(update);
 
+        findOrSaveAppUser(update);
+
         documentMessageAnswerProducer.produce(update);
     }
 
     private AppUser findOrSaveAppUser(Update update) {
-        // TODO в коллбеке юзера определяют по-другому
-        var message = update.getMessage();
-        var telegramUser = message.getFrom();
+        User telegramUser = update.hasMessage() ?
+                update.getMessage().getFrom() :
+                update.getCallbackQuery().getFrom();
+
         AppUser persistentAppUser = appUserRepo.findAppUserByTelegramUserId(telegramUser.getId());
         if (persistentAppUser == null) {
             AppUser transientAppUser = AppUser.builder()
