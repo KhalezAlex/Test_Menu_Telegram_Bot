@@ -8,6 +8,10 @@ import org.klozevitz.model.repositories.RawDataRepo;
 import org.klozevitz.repositories.appUsers.AppUserRepo;
 import org.klozevitz.services.interfaces.base.AnswerProducer;
 import org.klozevitz.services.interfaces.base.Main;
+import org.klozevitz.services.interfaces.producersByMessageType.CallbackQueryMessageAnswerProducer;
+import org.klozevitz.services.interfaces.producersByMessageType.CommandMessageAnswerProducer;
+import org.klozevitz.services.interfaces.producersByMessageType.DocumentMessageAnswerProducer;
+import org.klozevitz.services.interfaces.producersByMessageType.TextMessageAnswerProducer;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,12 +21,19 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class MainService implements Main {
     private final RawDataRepo rawDataRepo;
-    private final AnswerProducer answerProducer;
     private final AppUserRepo appUserRepo;
+    private final CallbackQueryMessageAnswerProducer callbackQueryMessageAnswerProducer;
+    private final TextMessageAnswerProducer textMessageAnswerProducer;
+    private final CommandMessageAnswerProducer commandMessageAnswerProducer;
+    private final DocumentMessageAnswerProducer documentMessageAnswerProducer;
 
     @Override
     public void processCallbackQueryMessage(Update update) {
         log.debug("processing callback message");
+
+        saveRawData(update);
+
+        callbackQueryMessageAnswerProducer.produce(update);
     }
 
     @Override
@@ -30,28 +41,26 @@ public class MainService implements Main {
         log.debug("processing text message");
 
         saveRawData(update);
-        
-        var appUser = findOrSaveAppUser(update);
 
-        var userState = appUser.getState();
-        var text = update.getMessage().getText();
-        Object output;
-
-        var sendMessage = new SendMessage();
-        sendMessage.setChatId(update.getMessage().getChatId().toString());
-        sendMessage.setText("FROM NODE");
-
-        answerProducer.produceAnswer(sendMessage);
+        textMessageAnswerProducer.produce(update);
     }
 
     @Override
     public void processCommandMessage(Update update) {
         log.debug("processing command message");
+
+        saveRawData(update);
+
+        commandMessageAnswerProducer.produce(update);
     }
 
     @Override
     public void processDocMessage(Update update) {
         log.debug("processing document message");
+
+        saveRawData(update);
+
+        documentMessageAnswerProducer.produce(update);
     }
 
     private AppUser findOrSaveAppUser(Update update) {

@@ -20,6 +20,7 @@ public class UpdateConsumerService implements UpdateConsumer {
     @RabbitListener(queues = CALLBACK_QUERY_UPDATE)
     public void consumeCallbackQueryUpdates(Update update) {
         log.debug("NODE: Message with callback query received");
+        main.processCallbackQueryMessage(update);
     }
 
     @Override
@@ -33,11 +34,13 @@ public class UpdateConsumerService implements UpdateConsumer {
     @RabbitListener(queues = COMMAND_UPDATE)
     public void consumeCommandUpdates(Update update) {
         log.debug("NODE: Text message with service command received");
+        main.processCommandMessage(update);
     }
 
     @Override
     @RabbitListener(queues = DOC_UPDATE)
     public void consumeDocUpdates(Update update) {
         log.debug("NODE: Doc message received");
+        main.processDocMessage(update);
     }
 }
