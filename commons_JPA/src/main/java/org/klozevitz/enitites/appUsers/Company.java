@@ -3,6 +3,7 @@ package org.klozevitz.enitites.appUsers;
 import javax.persistence.*;
 import lombok.*;
 import org.klozevitz.enitites.BaseEntity;
+import org.klozevitz.enitites.appUsers.enums.CompanyState;
 
 import java.util.Set;
 
@@ -17,6 +18,8 @@ import java.util.Set;
 public class Company extends BaseEntity {
     private String name;
     private String email;
+    @Enumerated(EnumType.STRING)
+    private CompanyState state;
     @OneToOne
     @JoinColumn(name = "app_user_id")
     private AppUser appUser;

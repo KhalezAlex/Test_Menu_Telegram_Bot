@@ -47,6 +47,10 @@ public class UpdateController {
         }
     }
 
+    private void processUpdateWithCallbackQuery(Update update) {
+        updateProducer.produce(CALLBACK_QUERY_UPDATE, update);
+    }
+
     private void processUpdateWithMessage(Update update) {
         var message = update.getMessage();
         if (message.hasText()) {
@@ -62,6 +66,19 @@ public class UpdateController {
         }
     }
 
+    private void processTextMessage(Update update) {
+        updateProducer.produce(TEXT_UPDATE, update);
+    }
+
+    private void processCommandMessage(Update update) {
+        updateProducer.produce(COMMAND_UPDATE, update);
+    }
+
+    private void processDocMessage(Update update) {
+        updateProducer.produce(DOC_UPDATE, update);
+        setFileReceivedMessage(update);
+    }
+
     private void setUnsupportedMessageTypeView(Update update) {
         var message = "Unsupported message type!";
         var sendMessage = messageUtils.generateSendMessageWithText(update, message);
@@ -70,24 +87,6 @@ public class UpdateController {
 
     public void setView(SendMessage sendMessage) {
         bot.sendAnswerMessage(sendMessage);
-    }
-
-    private void processTextMessage(Update update) {
-        updateProducer.produce(TEXT_UPDATE, update);
-    }
-
-
-    private void processCommandMessage(Update update) {
-        updateProducer.produce(COMMAND_UPDATE, update);
-    }
-
-    private void processUpdateWithCallbackQuery(Update update) {
-        updateProducer.produce(CALLBACK_QUERY_UPDATE, update);
-    }
-
-    private void processDocMessage(Update update) {
-        updateProducer.produce(DOC_UPDATE, update);
-        setFileReceivedMessage(update);
     }
 
     private void setFileReceivedMessage(Update update) {

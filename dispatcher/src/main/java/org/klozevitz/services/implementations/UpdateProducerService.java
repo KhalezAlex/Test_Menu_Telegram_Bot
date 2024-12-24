@@ -14,7 +14,7 @@ public class UpdateProducerService implements UpdateProducer {
     private final RabbitTemplate rabbitTemplate;
     @Override
     public void produce(String rabbitQueue, Update update) {
-        log.debug(update.getMessage().getText());
+        log.debug("получено сообщение");
         rabbitTemplate.convertAndSend(rabbitQueue, update);
     }
 }
