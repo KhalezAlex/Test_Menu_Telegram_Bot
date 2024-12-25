@@ -2,6 +2,7 @@ package org.klozevitz.services.implementations.producersByMessageType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.klozevitz.enitites.appUsers.AppUser;
 import org.klozevitz.services.interfaces.base.AnswerProducer;
 import org.klozevitz.services.interfaces.producersByMessageType.DocumentMessageAnswerProducer;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class DocumentMessageAnswerProducerService implements DocumentMessageAnsw
     private final AnswerProducer answerProducer;
 
     @Override
-    public void produce(Update update) {
+    public void produce(Update update, AppUser currentUser) {
         var sendMessage = new SendMessage();
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setText("FROM NODE - document message response");
