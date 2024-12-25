@@ -13,6 +13,7 @@
         <module>commons_rabbitMQ</module>
         <module>node</module>
         <module>commons_JPA</module>
+        <module>mail_service</module>
     </modules>
 
     <parent>

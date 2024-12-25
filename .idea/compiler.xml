@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="node" />
         <module name="commons_Telegram_view" />
+        <module name="mail_service" />
         <module name="commons_JPA" />
         <module name="commons_rabbitMQ" />
         <module name="dispatcher" />
@@ -21,6 +22,7 @@
       <module name="commons_Telegram_view" options="-parameters" />
       <module name="commons_rabbitMQ" options="-parameters" />
       <module name="dispatcher" options="-parameters" />
+      <module name="mail_service" options="-parameters" />
       <module name="node" options="-parameters" />
     </option>
   </component>
