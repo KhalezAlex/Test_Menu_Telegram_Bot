@@ -1,2 +1,3 @@
 /dispatcher/src/main/resources/application.yaml
 /node/src/main/resources/application.yaml
+/mail_service/src/main/resources/application.yaml
