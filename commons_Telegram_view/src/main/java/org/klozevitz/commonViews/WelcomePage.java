@@ -9,7 +9,7 @@ import java.util.List;
 
 public class WelcomePage {
     public static SendMessage unregisteredUsersWelcomePage(Update update) {
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         var keyboard = new InlineKeyboardMarkup();
         var row = List.of(
                 button("КОМПАНИЯ", "/company"),
@@ -24,28 +24,28 @@ public class WelcomePage {
     }
 
     public static SendMessage companyWelcomePage(Update update) {
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         sendMessage.setText("Company welcome page");
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         return sendMessage;
     }
 
     public static SendMessage departmentWelcomePage(Update update) {
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         sendMessage.setText("Department welcome page");
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         return sendMessage;
     }
 
     public static SendMessage employeeWelcomePage(Update update) {
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         sendMessage.setText("Employee welcome page");
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         return sendMessage;
     }
 
     public static SendMessage adminWelcomePage(Update update) {
-        SendMessage sendMessage = new SendMessage();
+        var sendMessage = new SendMessage();
         sendMessage.setText("Admin welcome page");
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         return sendMessage;
