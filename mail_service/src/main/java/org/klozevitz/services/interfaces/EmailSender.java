@@ -1,7 +1,7 @@
 package org.klozevitz.services.interfaces;
 
-import org.klozevitz.dto.MailParameters;
+import org.klozevitz.model.EmailParameters;
 
 public interface EmailSender {
-    void send(MailParameters mailParameters);
+    void send(EmailParameters parameters);
 }

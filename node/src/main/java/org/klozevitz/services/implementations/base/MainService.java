@@ -6,15 +6,12 @@ import org.klozevitz.enitites.appUsers.AppUser;
 import org.klozevitz.model.entities.RawData;
 import org.klozevitz.model.repositories.RawDataRepo;
 import org.klozevitz.repositories.appUsers.AppUserRepo;
-import org.klozevitz.services.interfaces.base.AnswerProducer;
 import org.klozevitz.services.interfaces.base.Main;
 import org.klozevitz.services.interfaces.producersByMessageType.CallbackQueryMessageAnswerProducer;
 import org.klozevitz.services.interfaces.producersByMessageType.CommandMessageAnswerProducer;
 import org.klozevitz.services.interfaces.producersByMessageType.DocumentMessageAnswerProducer;
 import org.klozevitz.services.interfaces.producersByMessageType.TextMessageAnswerProducer;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -35,9 +32,8 @@ public class MainService implements Main {
 
         saveRawData(update);
 
-        findOrSaveAppUser(update);
-
-        callbackQueryMessageAnswerProducer.produce(update);
+        var currentUser = findOrSaveAppUser(update);
+        callbackQueryMessageAnswerProducer.produce(update, currentUser);
     }
 
     @Override
@@ -46,9 +42,8 @@ public class MainService implements Main {
 
         saveRawData(update);
 
-        findOrSaveAppUser(update);
-
-        textMessageAnswerProducer.produce(update);
+        var currentUser = findOrSaveAppUser(update);
+        textMessageAnswerProducer.produce(update, currentUser);
     }
 
     @Override
@@ -57,9 +52,8 @@ public class MainService implements Main {
 
         saveRawData(update);
 
-        findOrSaveAppUser(update);
-
-        commandMessageAnswerProducer.produce(update);
+        var currentUser = findOrSaveAppUser(update);
+        commandMessageAnswerProducer.produce(update, currentUser);
     }
 
     @Override
@@ -68,9 +62,8 @@ public class MainService implements Main {
 
         saveRawData(update);
 
-        findOrSaveAppUser(update);
-
-        documentMessageAnswerProducer.produce(update);
+        var currentUser = findOrSaveAppUser(update);
+        documentMessageAnswerProducer.produce(update, currentUser);
     }
 
     private AppUser findOrSaveAppUser(Update update) {
@@ -83,7 +76,6 @@ public class MainService implements Main {
             AppUser transientAppUser = AppUser.builder()
                     .telegramUserId(telegramUser.getId())
                     .username(telegramUser.getUserName())
-                    .isActive(true)
                     .build();
             return appUserRepo.save(transientAppUser);
         }

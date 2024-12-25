@@ -20,7 +20,6 @@ public class AppUser extends BaseEntity {
     @CreationTimestamp
     private LocalDateTime firstLoginDate;
     private String username;
-    private boolean isActive;
     @OneToOne(cascade = CascadeType.ALL)
     private Admin admin;
     @OneToOne(cascade = CascadeType.ALL)
@@ -30,15 +29,10 @@ public class AppUser extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private Employee employee;
 
-    public Class getRole() {
-        if (admin != null) {
-            return Admin.class;
-        } else if (company != null) {
-            return Company.class;
-        } else if (department != null) {
-            return Department.class;
-        } else {
-            return null;
-        }
+    public boolean isRegistered() {
+        return admin != null ||
+                company != null ||
+                department != null ||
+                employee != null;
     }
 }
